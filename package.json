@@ -16,5 +16,14 @@
   "bugs": {
     "url": "https://github.com/GrayFrost/Basic-Project/issues"
   },
-  "homepage": "https://github.com/GrayFrost/Basic-Project#readme"
+  "homepage": "https://github.com/GrayFrost/Basic-Project#readme",
+  "devDependencies": {
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
 }
