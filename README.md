@@ -22,7 +22,7 @@ cd Basic-Project
 npm init -y
 git init
 ```
-然后在目录下创建三个文件夹`public`，`src`,`webpack`。
+然后在目录下创建三个文件夹`public`，`src`，`webpack`。
 
 ### public 
 
@@ -241,18 +241,55 @@ module.exports = prodWebpackConfig;
 
 
 ## react相关
-```
+```shell
 npm install react react-dom -S
 ```
+```shell
+npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev
+```
+修改`.babelrc`
+```json
+{
+  "presets": ["@babel/preset-env", "@babel/preset-react"]
+}
+```
+修改webpack
+```diff
+{
++   test: /\.(m?js|jsx)$/,
+    exclude: /(node_modules|bower_components)/,
+    use: "babel-loader",
+},
+```
+```diff
++ extensions: [".js", ".jsx"],
+```
+```diff
+entry: {
++   index: "./index.jsx",
+},
+```
+然后把项目里的index.js改为index.jsx，并添加内容。
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
 
+function App(){
+  return <div>Hello Webpack</div>
+}
+ReactDOM.render(<App />, document.querySelector('#root'));
+```
+重启项目，可以在页面上看到`Hello Webpack`。
 ## loader
+
+
 babel-loader
 css-loader style-loader less-loader postcss-loader
 file-loader url-loader
 
 ## plugin
 
-
+clean-webpack-plugin
 defineplugin
 html-webpack-plugin
 
