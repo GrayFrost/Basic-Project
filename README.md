@@ -2,6 +2,8 @@
 从头搭建react环境全过程。
 
 计划：
+一个完整的流程。流程走完，再细分模块深入。
+
 1. 基础目录划分
 2. webpack基本配置
 3. react相关
@@ -280,10 +282,34 @@ function App(){
 ReactDOM.render(<App />, document.querySelector('#root'));
 ```
 重启项目，可以在页面上看到`Hello Webpack`。
+
+TODO: devtool source-map
+
+## 样式
+``` shell
+npm i css-loader style-loader -D
+```
+修改`webpack.base.config.js`
+``` javascript
+{
+    test: /\.css$/,
+    use: ["style-loader", "css-loader"],
+},
+```
+了解这些loader的作用
+
+预处理器，本次选用less。如果需要sass或stylus，请自行替换。
+``` shell
+npm install less less-loader -D
+```
+修改`webpack.base.conf.js`
+
+css模块化
+
+## 字体
+url-loader file-loader
+
 ## loader
-
-
-babel-loader
 css-loader style-loader less-loader postcss-loader
 file-loader url-loader
 
@@ -307,10 +333,6 @@ progress-plugin
 clearn-webpack-plugin
 friendly-errors-webpack-plugin node-notifier
 
-## devServer
-webpack dev server
-
-## 修改npm命令
 
 ## typescript
 ## lint

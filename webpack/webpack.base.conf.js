@@ -1,6 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
     context: path.resolve(__dirname, "../src"),
@@ -8,7 +8,7 @@ module.exports = {
         index: "./index.jsx",
     },
     output: {
-        path: path.resolve(__dirname, '../dist'),
+        path: path.resolve(__dirname, "../dist"),
         filename: "[name].js",
     },
     module: {
@@ -18,13 +18,19 @@ module.exports = {
                 exclude: /(node_modules|bower_components)/,
                 use: "babel-loader",
             },
+            {
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"],
+            },
         ],
     },
     resolve: {
         extensions: [".js", ".jsx"],
     },
-    plugins: [new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../public', 'index.html'),
-      filename: 'index.html'
-    })],
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, "../public", "index.html"),
+            filename: "index.html",
+        }),
+    ],
 };
