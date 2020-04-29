@@ -25,6 +25,11 @@ npm init -y
 git init
 ```
 然后在目录下创建三个文件夹`public`，`src`，`webpack`。
+``` 
+├── public
+├── src
+└── webpack
+```
 
 ### public 
 
@@ -66,6 +71,20 @@ webpack配置
 * webpack.dev.conf.js
 * webpack.prod.conf.js
 
+```
+├── package-lock.json
+├── package.json
+├── public
+│   ├── favicon.ico
+│   └── index.html
+├── src
+│   └── index.jsx
+└── webpack
+    ├── webpack.base.conf.js
+    ├── webpack.dev.conf.js
+    └── webpack.prod.conf.js
+```
+
 ### 根目录
 
 除了生成的`package.json`外，目前需要在根目录下添加一些其他文件，先添加`README.md`，`.gitignore`和`.editorconfig`。现在根目录下的文件有：
@@ -75,6 +94,23 @@ webpack配置
 * README.md 掌握markdown语法，谁都能写
 * .gitignore 现在只需添加`node_modules`这一行配置
 * .editorconfig 统一开发人员编辑器配置
+
+```
+├── README.md
+├── .gitignore
+├── .editorconfig
+├── package-lock.json
+├── package.json
+├── public
+│   ├── favicon.ico
+│   └── index.html
+├── src
+│   └── index.jsx
+└── webpack
+    ├── webpack.base.conf.js
+    ├── webpack.dev.conf.js
+    └── webpack.prod.conf.js
+```
 
 ## webpack基本配置
 ```
@@ -121,6 +157,24 @@ module: {
 {
     "presets": ["@babel/preset-env"]
 }
+```
+
+```
+├── README.md
+├── .gitignore
+├── .editorconfig
+├── .babelrc
+├── package-lock.json
+├── package.json
+├── public
+│   ├── favicon.ico
+│   └── index.html
+├── src
+│   └── index.jsx
+└── webpack
+    ├── webpack.base.conf.js
+    ├── webpack.dev.conf.js
+    └── webpack.prod.conf.js
 ```
 
 然后`webpack.base.conf.js`中的配置变为
