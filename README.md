@@ -72,7 +72,6 @@ webpack配置
 * webpack.prod.conf.js
 
 ```
-├── package-lock.json
 ├── package.json
 ├── public
 │   ├── favicon.ico
@@ -99,7 +98,6 @@ webpack配置
 ├── README.md
 ├── .gitignore
 ├── .editorconfig
-├── package-lock.json
 ├── package.json
 ├── public
 │   ├── favicon.ico
