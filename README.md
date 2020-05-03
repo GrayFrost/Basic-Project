@@ -511,10 +511,61 @@ ProvidePlugin 配置全局变量
 ## 抽离css
 
 ``` shell
+npm install mini-css-extract-plugin -D
+```
 
+webpack4使用mini-css-extract-plugin
+
+修改`webpack.base.conf.js`，这个插件应该只在生产环境中使用，为此我们需要修改npm中的命令，添加环境变量，然后在base文件中判断环境，再进行引用对应loader
+
+``` shell
+npm install cross-env -S
+```
+
+修改package.json的scripts
+
+``` diff
++ "dev": "cross-env NODE_ENV=devlopment webpack-dev-server --config webpack/webpack.dev.conf.js",
++ "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.conf.js"
+```
+
+修改webpack.base.conf.js
+
+```
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const env = process.env.NODE_ENV;
+
+{
+    test: /\.css$/,
+    use: [
+        env === "production"
+            ? MiniCssExtractPlugin.loader
+            : "style-loader",
+        "css-loader",
+    ],
+},
+{
+    test: /\.less$/,
+    use: [
+        env === "production"
+            ? MiniCssExtractPlugin.loader
+            : "style-loader",
+        "css-loader",
+        "less-loader",
+    ],
+},
+
+plugins: [
+    ...,
+    new MiniCssExtractPlugin({}),
+],
 ```
 
 
+
+todo: 与extract-text-webpack-plugin比较
+
+optimize-css-assets-webpack-plugin
 
 ## loader
 css-loader style-loader less-loader postcss-loader

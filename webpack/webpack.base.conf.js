@@ -1,7 +1,10 @@
 const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const env = process.env.NODE_ENV;
+console.log("env", env);
 
 module.exports = {
     context: path.resolve(__dirname, "../src"),
@@ -21,11 +24,22 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ["style-loader", "css-loader"],
+                use: [
+                    env === "production"
+                        ? MiniCssExtractPlugin.loader
+                        : "style-loader",
+                    "css-loader",
+                ],
             },
             {
                 test: /\.less$/,
-                use: ["style-loader", "css-loader", "less-loader"],
+                use: [
+                    env === "production"
+                        ? MiniCssExtractPlugin.loader
+                        : "style-loader",
+                    "css-loader",
+                    "less-loader",
+                ],
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -58,6 +72,7 @@ module.exports = {
             template: path.resolve(__dirname, "../public", "index.html"),
             filename: "index.html",
         }),
-        new CleanWebpackPlugin()
+        new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin({}),
     ],
 };
