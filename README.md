@@ -425,8 +425,96 @@ export default App;
 
 TODO: postcss css模块化
 
-## 字体
-url-loader file-loader
+## 图片、字体文件
+``` shell
+npm install file-loader url-loader -D
+```
+
+url-loader封装了file-loader但不依赖file-loader。但是在文件大小（单位byte）低于指定的限制时，可以返回一个DataURL。配置`webpack.base.conf.js`
+
+``` javascript
+{
+    test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+    loader: "url-loader",
+    options: {
+        limit: 10000,
+    },
+},
+{
+    test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+    loader: "url-loader",
+    options: {
+        limit: 10000,
+    },
+},
+{
+    test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+    loader: "url-loader",
+    options: {
+        limit: 10000,
+    },
+},
+```
+
+添加images目录，再修改App.jsx
+
+``` diff
+import React from "react";
+import "./styles/App.less";
++ import img from "./images/a.jpg";
+
+function App() {
+    return (
+        <div id="app">
+            <h1>Hello Webpack</h1>
++           <img src={img} alt="" />
+        </div>
+    );
+}
+
+export default App;
+```
+
+
+
+TODO: 自定义file name  hash
+
+
+
+### 清空dist
+
+每次打包前清空dist目录
+
+``` shell
+npm install clean-webpack-plugin -D
+```
+
+修改`webpack.base.conf.js`
+
+``` diff
++ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+
+plugins: [
+    ...,
++    new CleanWebpackPlugin()
+],
+```
+
+
+
+copywebpackplugin
+
+ProvidePlugin 配置全局变量
+
+
+
+## 抽离css
+
+``` shell
+
+```
+
+
 
 ## loader
 css-loader style-loader less-loader postcss-loader
@@ -469,4 +557,6 @@ husky
 ### code spliting
 ### 按需引入
 ### webpack bundle analyzer
+
+
 
