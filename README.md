@@ -567,6 +567,57 @@ todo: 与extract-text-webpack-plugin比较
 
 optimize-css-assets-webpack-plugin
 
+
+
+## 按需加载
+
+import
+
+添加一个文件buttonClickFunc.js
+
+```javascript
+const sayHello = () => {
+    console.log("hello world");
+};
+const sayGoodbye = () => {
+    console.log("goodbye");
+};
+
+export { sayHello, sayGoodbye };
+```
+
+修改app.jsx
+
+```jsx
+import React from "react";
+import "./styles/App.less";
+import img from "./images/a.jpg";
+
+function App() {
+  const onClick = () => {
+    import('./buttonClickFunc').then(module => {
+      const {sayHello, sayGoodbye} = module;
+      sayHello();
+      sayGoodbye();
+    })
+  }
+    return (
+        <div id="app">
+            <h1>Hello Webpack</h1>
+            <button onClick={onClick}>click me to load file</button>
+            <img src={img} alt="" />
+        </div>
+    );
+}
+
+export default App;
+
+```
+
+当我们点击button的时候，看控制台，发现会多请求一个0.js。
+
+TODO: chunkfilename webpackchunkname魔法注释
+
 ## loader
 css-loader style-loader less-loader postcss-loader
 file-loader url-loader
