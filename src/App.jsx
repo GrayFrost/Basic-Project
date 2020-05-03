@@ -12,7 +12,7 @@ function App() {
   }
     return (
         <div id="app">
-            <h1>Hello Webpack</h1>
+            <h1>Hello Webpack22</h1>
             <button onClick={onClick}>click me to load file</button>
             <img src={img} alt="" />
         </div>

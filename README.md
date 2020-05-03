@@ -618,6 +618,46 @@ export default App;
 
 TODO: chunkfilename webpackchunkname魔法注释
 
+
+
+## 热更新
+
+现在虽然我们配置了devserver可以动态更新，但每次都是刷新浏览器，我们想要局部更新。
+
+首先配置 `devServer` 的 `hot` 为 `true`
+
+并且在 `plugins` 中增加 `new webpack.HotModuleReplacementPlugin()`
+
+修改`webpack.dev.conf.js`
+
+``` javascript
+const devWebpackConfig = webpackMerge(baseWebpackConfig, {
+  mode: 'development',
+  devtool: 'cheap-module-eval-source-map',
+  devServer: {
+    port: '3000',
+    hot: true
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ]
+});
+```
+
+此时还是整个页面刷新。  
+
+在入口文件index.jsx中添加
+
+```javascript
+if(module && module.hot) {
+    module.hot.accept()
+}
+```
+
+
+
+todo: resolve.alias配置
+
 ## loader
 css-loader style-loader less-loader postcss-loader
 file-loader url-loader
