@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './App';
 
-function App(){
-  return <div>Hello Webpack</div>
-}
 ReactDOM.render(<App />, document.querySelector('#root'));

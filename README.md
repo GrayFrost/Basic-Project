@@ -335,7 +335,17 @@ ReactDOM.render(<App />, document.querySelector('#root'));
 ```
 重启项目，可以在页面上看到`Hello Webpack`。
 
-TODO: devtool source-map
+但是目前通过控制台无法很好的调试我们的代码，在source中打开index.jsx，发现代码调试太难。需要配置devtool。分别对`webpack.dev.conf.js`和`webpack.prod.conf.js`进行配置
+
+``` javascript
+devtool: 'cheap-module-eval-source-map',
+```
+
+``` javascript
+devtool: 'source-map'
+```
+
+重启项目。
 
 ## 样式
 ``` shell
@@ -356,7 +366,64 @@ npm install less less-loader -D
 ```
 修改`webpack.base.conf.js`
 
-css模块化
+```javascript
+{
+  test: /\.less$/,
+    use: ["style-loader", "css-loader", "less-loader"],
+},
+```
+
+
+
+然后给项目添加文件，新建App.jsx和styles/App.less
+
+```
+├── README.md
+├── .gitignore
+├── .editorconfig
+├── .babelrc
+├── package-lock.json
+├── package.json
+├── public
+│   ├── favicon.ico
+│   └── index.html
+├── src
+│   ├── App.jsx
+│   ├── index.jsx
+│   └── styles
+│       └── App.less
+└── webpack
+    ├── webpack.base.conf.js
+    ├── webpack.dev.conf.js
+    └── webpack.prod.conf.js
+```
+
+主要更改集中于App.less
+
+```less
+@color: orange;
+
+#app {
+  color: @color;
+}
+```
+
+然后在App.jsx中引入样式文件
+
+```diff
+import React from 'react';
++ import './styles/App.less';
+
+function App(){
+  return <div id="app">Hello Webpack</div>
+}
+
+export default App;
+```
+
+
+
+TODO: postcss css模块化
 
 ## 字体
 url-loader file-loader

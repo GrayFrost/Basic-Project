@@ -3,7 +3,8 @@ const webpackMerge = require("webpack-merge");
 const baseWebpackConfig = require("./webpack.base.conf");
 
 const prodWebpackConfig = webpackMerge(baseWebpackConfig, {
-  mode: 'production'
+  mode: 'production',
+  devtool: 'source-map'
 });
 
 module.exports = prodWebpackConfig;
