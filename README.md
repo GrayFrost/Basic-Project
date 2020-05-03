@@ -658,6 +658,16 @@ if(module && module.hot) {
 
 todo: resolve.alias配置
 
+
+
+## hash
+
+hash
+
+chunkhash
+
+contenthash
+
 ## loader
 css-loader style-loader less-loader postcss-loader
 file-loader url-loader
@@ -699,6 +709,20 @@ husky
 ### code spliting
 ### 按需引入
 ### webpack bundle analyzer
+
+
+
+splitchunk
+
+dllplugin
+
+
+
+## 其他
+
+多页
+
+跨域
 
 
 
