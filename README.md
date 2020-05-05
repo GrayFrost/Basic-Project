@@ -724,7 +724,7 @@ husky
 ### 按需引入
 ### webpack bundle analyzer
 
-
+speed-measure-webpack-plugin
 
 splitchunk
 
@@ -733,6 +733,14 @@ dllplugin
 loader开启缓存
 
 合理使用sourcemap
+
+
+
+loader exclude include
+
+
+
+mini-css-extract-plugin   optimize-css-assets-webpack-plugin
 
 
 
