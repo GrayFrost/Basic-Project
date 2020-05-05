@@ -672,6 +672,10 @@ contenthash
 css-loader style-loader less-loader postcss-loader
 file-loader url-loader
 
+image-webpack-loader
+
+thread-loader
+
 ## plugin
 
 clean-webpack-plugin
@@ -691,6 +695,16 @@ mini-css-extract-plugin
 progress-plugin
 clearn-webpack-plugin
 friendly-errors-webpack-plugin node-notifier
+
+webpack-bundle-analyzer
+
+speed-measure-webpack-plugin
+
+optimize-css-assets-webpack-plugin
+
+purgecss-webpack-plugin
+
+dllplugin
 
 
 ## typescript
@@ -715,6 +729,10 @@ husky
 splitchunk
 
 dllplugin
+
+loader开启缓存
+
+合理使用sourcemap
 
 
 
