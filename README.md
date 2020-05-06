@@ -553,33 +553,8 @@ if(module && module.hot) {
 ```
 
 
-
-todo: resolve.alias配置
-
-
-## 性能
-
-### 分析
-
-#### 速度
-
-speed-measure
-
-#### 大小
-
-bundle-analyzer
-
-### 压缩代码
-#### 抽离css
-
-``` shell
-npm install mini-css-extract-plugin -D
-```
-
-webpack4使用mini-css-extract-plugin
-
-修改`webpack.base.conf.js`，这个插件应该只在生产环境中使用，为此我们需要修改npm中的命令，添加环境变量，然后在base文件中判断环境，再进行引用对应loader
-
+### 环境判断
+有时我们需要在一个公共文件中判断当前的环境是生成环境还是开发环境。安装`cross-env`。
 ``` shell
 npm install cross-env -S
 ```
@@ -590,6 +565,128 @@ npm install cross-env -S
 + "dev": "cross-env NODE_ENV=devlopment webpack-dev-server --config webpack/webpack.dev.conf.js",
 + "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.conf.js"
 ```
+`cross-env`能够帮我们设置环境变量的时候解决不同系统之间的兼容性问题。
+
+
+## 性能
+
+### 分析
+
+#### 速度
+
+安装`speed-measure-webpack-plugin`，该插件能分析loader和plugin的耗时。
+
+``` shell
+npm install speed-measure-webpack-plugin -D
+```
+
+
+修改`webpack.prod.conf.js`
+
+``` javascript
+const webpackMerge = require("webpack-merge");
+const baseWebpackConfig = require("./webpack.base.conf");
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const smp = new SpeedMeasurePlugin();
+
+const _webpackConfig = webpackMerge(baseWebpackConfig, {
+  mode: 'production',
+  devtool: 'source-map'
+});
+const prodWebpackConfig = smp.wrap(_webpackConfig);
+
+module.exports = process.env.NODE_ENV === 'analysis' ? prodWebpackConfig : _webpackConfig;
+```
+
+
+
+修改`package.json`的scripts
+
+```
+"analysis": "cross-env NODE_ENV=analysis webpack --config webpack/webpack.prod.conf.js"
+```
+
+
+
+执行`npm run analysis`，可以看到分析结果
+
+```
+ SMP  ⏱  
+General output time took 1.69 secs
+
+ SMP  ⏱  Plugins
+HtmlWebpackPlugin took 0.091 secs
+CleanWebpackPlugin took 0.013 secs
+MiniCssExtractPlugin took 0.002 secs
+
+ SMP  ⏱  Loaders
+babel-loader took 0.643 secs
+  module count = 3
+modules with no loaders took 0.508 secs
+  module count = 9
+url-loader took 0.495 secs
+  module count = 1
+mini-css-extract-plugin, and 
+css-loader, and 
+less-loader took 0.259 secs
+  module count = 1
+css-loader, and 
+less-loader took 0.237 secs
+  module count = 1
+html-webpack-plugin took 0.015 secs
+  module count = 1
+```
+
+
+
+#### 大小
+
+安装`webpack-bundle-analyzer`，该插件能够分析打包后各类包的引用大小，我们需要针对体积过大的文件进行优化处理。
+
+``` shell
+npm install webpack-bundle-analyzer -D
+```
+
+
+
+修改`webpack.prod.conf.js`
+
+```diff
+const webpackMerge = require("webpack-merge");
+const baseWebpackConfig = require("./webpack.base.conf");
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
++ const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+
+const smp = new SpeedMeasurePlugin();
+
+const _webpackConfig = webpackMerge(baseWebpackConfig, {
+    mode: "production",
+    devtool: "source-map",
+});
+const prodWebpackConfig = smp.wrap(_webpackConfig);
+
++ if (process.env.NODE_ENV === "analysis") {
++    _webpackConfig.plugins.push(new BundleAnalyzerPlugin());
++ }
+
+module.exports =
+    process.env.NODE_ENV === "analysis" ? prodWebpackConfig : _webpackConfig;
+```
+
+执行`npm run analysis`即可。
+
+
+
+### 压缩代码
+#### 抽离css
+
+``` shell
+npm install mini-css-extract-plugin -D
+```
+
+webpack4使用`mini-css-extract-plugin`。
+
+修改`webpack.base.conf.js`
 
 修改webpack.base.conf.js
 
