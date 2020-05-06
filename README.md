@@ -6,13 +6,9 @@
 
 1. 基础目录划分
 2. webpack基本配置
-3. react相关
-4. loader
-5. plugin
-6. typescript
-7. lint
-8. css module
+3. 搭建基本功能
 9. 性能
+5. 校验
 
 ## 基础目录划分
 
@@ -89,7 +85,6 @@ webpack配置
 除了生成的`package.json`外，目前需要在根目录下添加一些其他文件，先添加`README.md`，`.gitignore`和`.editorconfig`。现在根目录下的文件有：
 
 * package.json 目前还是初始化的配置
-
 * README.md 掌握markdown语法，谁都能写
 * .gitignore 现在只需添加`node_modules`这一行配置
 * .editorconfig 统一开发人员编辑器配置
@@ -220,8 +215,6 @@ module.exports = {
 };
 ```
 
-TODO: 解释context 
-
 ### dev
 安装webpack dev server
 
@@ -256,12 +249,6 @@ module.exports = devWebpackConfig;
 },
 ```
 
-然后我们在src的index.js中添加一行代码`console.log('hello webpack');`。
-
-在此进行一个插曲，安装html-webpack-plugin，为了方便可以观察到我们的代码更改。安装步骤可以先跳到后面的plugin章节再回来。
-
-运行命令`npm run dev`，打开localhost:3000，看控制台是否输出hello webpack。
-
 ### prod
 合并base
 
@@ -293,8 +280,10 @@ module.exports = prodWebpackConfig;
 
 
 
+## 搭建基本环境
 
-## react相关
+### react
+
 ```shell
 npm install react react-dom -S
 ```
@@ -333,7 +322,30 @@ function App(){
 }
 ReactDOM.render(<App />, document.querySelector('#root'));
 ```
-重启项目，可以在页面上看到`Hello Webpack`。
+
+
+### html
+
+为了能够在浏览器中看到我们代码更改的效果，我们需要安装`html-webpack-plugin`。
+
+```shell
+npm install html-webpack-plugin -D
+```
+
+配置`webpack.base.conf.js`的plugins选项
+
+```javascript
+new HtmlWebpackPlugin({
+  template: path.resolve(__dirname, "../public", "index.html"),
+  filename: "index.html",
+}),
+```
+
+运行命令`npm run dev`，打开localhost:3000，可以在页面上看到`Hello Webpack`。
+
+
+
+### source-map
 
 但是目前通过控制台无法很好的调试我们的代码，在source中打开index.jsx，发现代码调试太难。需要配置devtool。分别对`webpack.dev.conf.js`和`webpack.prod.conf.js`进行配置
 
@@ -347,7 +359,9 @@ devtool: 'source-map'
 
 重启项目。
 
-## 样式
+
+
+### 样式
 ``` shell
 npm i css-loader style-loader -D
 ```
@@ -358,8 +372,6 @@ npm i css-loader style-loader -D
     use: ["style-loader", "css-loader"],
 },
 ```
-了解这些loader的作用
-
 预处理器，本次选用less。如果需要sass或stylus，请自行替换。
 ``` shell
 npm install less less-loader -D
@@ -373,9 +385,7 @@ npm install less less-loader -D
 },
 ```
 
-
-
-然后给项目添加文件，新建App.jsx和styles/App.less
+然后给项目添加文件，新建`App.jsx`和`styles/App.less``
 
 ```
 ├── README.md
@@ -398,7 +408,7 @@ npm install less less-loader -D
     └── webpack.prod.conf.js
 ```
 
-主要更改集中于App.less
+主要更改集中于`App.less`
 
 ```less
 @color: orange;
@@ -408,7 +418,7 @@ npm install less less-loader -D
 }
 ```
 
-然后在App.jsx中引入样式文件
+然后在`App.jsx`中引入样式文件
 
 ```diff
 import React from 'react';
@@ -425,7 +435,9 @@ export default App;
 
 TODO: postcss css模块化
 
-## 图片、字体文件
+
+
+### 图片、字体文件
 ``` shell
 npm install file-loader url-loader -D
 ```
@@ -502,13 +514,63 @@ plugins: [
 
 
 
-copywebpackplugin
+TODO: copywebpackplugin
 
-ProvidePlugin 配置全局变量
+TODO: ProvidePlugin 配置全局变量
+
+### 热更新
+
+现在虽然我们配置了devserver可以动态更新，但每次都是刷新浏览器，我们想要局部更新。
+
+首先配置 `devServer` 的 `hot` 为 `true`
+
+并且在 `plugins` 中增加 `new webpack.HotModuleReplacementPlugin()`
+
+修改`webpack.dev.conf.js`
+
+``` javascript
+const devWebpackConfig = webpackMerge(baseWebpackConfig, {
+  mode: 'development',
+  devtool: 'cheap-module-eval-source-map',
+  devServer: {
+    port: '3000',
+    hot: true
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ]
+});
+```
+
+此时还是整个页面刷新。  
+
+在入口文件index.jsx中添加
+
+```javascript
+if(module && module.hot) {
+    module.hot.accept()
+}
+```
 
 
 
-## 抽离css
+todo: resolve.alias配置
+
+
+## 性能
+
+### 分析
+
+#### 速度
+
+speed-measure
+
+#### 大小
+
+bundle-analyzer
+
+### 压缩代码
+#### 抽离css
 
 ``` shell
 npm install mini-css-extract-plugin -D
@@ -569,7 +631,7 @@ optimize-css-assets-webpack-plugin
 
 
 
-## 按需加载
+### 按需加载
 
 import
 
@@ -618,106 +680,9 @@ export default App;
 
 TODO: chunkfilename webpackchunkname魔法注释
 
+### 范围
+#### resolve
 
-
-## 热更新
-
-现在虽然我们配置了devserver可以动态更新，但每次都是刷新浏览器，我们想要局部更新。
-
-首先配置 `devServer` 的 `hot` 为 `true`
-
-并且在 `plugins` 中增加 `new webpack.HotModuleReplacementPlugin()`
-
-修改`webpack.dev.conf.js`
-
-``` javascript
-const devWebpackConfig = webpackMerge(baseWebpackConfig, {
-  mode: 'development',
-  devtool: 'cheap-module-eval-source-map',
-  devServer: {
-    port: '3000',
-    hot: true
-  },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ]
-});
-```
-
-此时还是整个页面刷新。  
-
-在入口文件index.jsx中添加
-
-```javascript
-if(module && module.hot) {
-    module.hot.accept()
-}
-```
-
-
-
-todo: resolve.alias配置
-
-
-
-## hash
-
-hash
-
-chunkhash
-
-contenthash
-
-## loader
-css-loader style-loader less-loader postcss-loader
-file-loader url-loader
-
-image-webpack-loader
-
-thread-loader
-
-## plugin
-
-clean-webpack-plugin
-defineplugin
-html-webpack-plugin
-
-```
-npm install html-webpack-plugin -D
-```
-
-目前现在webpack.base.conf.js里配置。
-
-TODO: 根据dev prod环境分别配置
-
-terser-webpack-plugin
-mini-css-extract-plugin
-progress-plugin
-clearn-webpack-plugin
-friendly-errors-webpack-plugin node-notifier
-
-webpack-bundle-analyzer
-
-speed-measure-webpack-plugin
-
-optimize-css-assets-webpack-plugin
-
-purgecss-webpack-plugin
-
-dllplugin
-
-
-## typescript
-## lint
-### eslint
-eslint eslint-loader
-### stylelint
-### commitlint
-husky
-### prettier
-### editorconfig
-## css module
-## 性能划分
 ### tree-shaking
 ### scope hoist
 ### code spliting
@@ -734,21 +699,72 @@ loader开启缓存
 
 合理使用sourcemap
 
-
-
 loader exclude include
 
 
 
 mini-css-extract-plugin   optimize-css-assets-webpack-plugin
 
+moment ignoreplugin
 
+lodash 按需加载 配置babel 注意同名情况报错解决
+
+## 校验
+
+### typescript
+### lint
+#### eslint
+eslint eslint-loader
+#### stylelint
+#### commitlint
+husky
+### prettier
+### editorconfig
 
 ## 其他
 
 多页
 
 跨域
+
+## 总结
+
+### hash
+
+hash
+
+chunkhash
+
+contenthash
+
+### loader
+css-loader style-loader less-loader postcss-loader
+file-loader url-loader
+
+image-webpack-loader
+
+thread-loader
+
+### plugin
+clean-webpack-plugin
+defineplugin
+html-webpack-plugin
+
+terser-webpack-plugin
+mini-css-extract-plugin
+progress-plugin
+clearn-webpack-plugin
+friendly-errors-webpack-plugin node-notifier
+
+webpack-bundle-analyzer
+
+speed-measure-webpack-plugin
+
+optimize-css-assets-webpack-plugin
+
+purgecss-webpack-plugin
+
+dllplugin
 
 
 
