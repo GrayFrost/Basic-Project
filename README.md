@@ -678,7 +678,10 @@ module.exports =
 
 
 ### 压缩代码
-#### 抽离css
+#### 压缩js
+terser
+
+#### 抽离css并压缩
 
 ``` shell
 npm install mini-css-extract-plugin -D
@@ -862,6 +865,13 @@ optimize-css-assets-webpack-plugin
 purgecss-webpack-plugin
 
 dllplugin
+
+### 原理
+webpack打包原理
+
+hmr
+
+手写loader plugin
 
 
 
