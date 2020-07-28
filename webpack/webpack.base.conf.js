@@ -1,4 +1,5 @@
 const path = require("path");
+const MyPlugin = require('../plugin/myPlugin');
 
 module.exports = {
     context: path.resolve(__dirname, "../src"),
@@ -33,4 +34,7 @@ module.exports = {
     resolve: {
         extensions: [".js"],
     },
+    plugins: [
+        new MyPlugin()
+    ]
 };
