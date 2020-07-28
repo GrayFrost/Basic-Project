@@ -845,16 +845,16 @@ image-webpack-loader
 
 thread-loader
 
-### plugin
-clean-webpack-plugin
-defineplugin
-html-webpack-plugin
-
-terser-webpack-plugin
-mini-css-extract-plugin
-progress-plugin
-clearn-webpack-plugin
-friendly-errors-webpack-plugin node-notifier
+### lugin
+* clean-webpack-plugin
+* webpack.DefinePlugin
+* html-webpack-plugin
+* terser-webpack-plugin
+* mini-css-extract-plugin
+* case-sensitive-paths-webpack-plugin
+* 
+* progress-plugin
+  friendly-errors-webpack-plugin node-notifier
 
 webpack-bundle-analyzer
 
