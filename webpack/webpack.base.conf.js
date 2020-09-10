@@ -3,6 +3,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const ConsoleInfoWebpackPlugin = require('../plugins/console-info-webpack-plugin');
+
 const env = process.env.NODE_ENV;
 
 module.exports = {
@@ -74,5 +76,6 @@ module.exports = {
         }),
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({}),
+        new ConsoleInfoWebpackPlugin()
     ],
 };
