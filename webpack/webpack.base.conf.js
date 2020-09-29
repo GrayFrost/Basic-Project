@@ -18,7 +18,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(m?js|jsx)$/,
+                test: /\.(m?js|jsx|ts|tsx)$/,
                 exclude: /(node_modules|bower_components)/,
                 use: "babel-loader",
             },
@@ -65,7 +65,7 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: [".js", ".jsx"],
+        extensions: [".js", ".jsx", '.ts', '.tsx'],
     },
     plugins: [
         new HtmlWebpackPlugin({
